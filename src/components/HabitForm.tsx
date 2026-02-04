@@ -44,38 +44,38 @@ export function HabitForm({ open, onOpenChange, onSave, editingHabit }: HabitFor
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle className="text-xl">
-            {editingHabit ? 'Edit Habit' : 'New Habit'}
+          <DialogTitle className="text-base">
+            {editingHabit ? 'Edit habit' : 'New habit'}
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="habit-name" className="text-sm font-medium">
-              Habit Name
+            <Label htmlFor="habit-name" className="text-xs text-muted-foreground">
+              Name
             </Label>
             <Input
               id="habit-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Morning run"
-              className="h-11"
+              className="h-9 text-sm"
               autoFocus
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Choose an Icon</Label>
-            <div className="grid grid-cols-6 gap-2">
+            <Label className="text-xs text-muted-foreground">Icon</Label>
+            <div className="grid grid-cols-6 gap-1.5">
               {EMOJI_OPTIONS.map((e) => (
                 <button
                   key={e}
                   type="button"
                   onClick={() => setEmoji(e)}
-                  className={`h-11 w-11 rounded-lg text-xl transition-all duration-150 ${
+                  className={`h-9 w-9 rounded-md text-base transition-all duration-100 ${
                     emoji === e
-                      ? 'bg-primary text-primary-foreground scale-110 shadow-md'
+                      ? 'bg-foreground text-background'
                       : 'bg-secondary hover:bg-muted'
                   }`}
                 >
@@ -85,16 +85,17 @@ export function HabitForm({ open, onOpenChange, onSave, editingHabit }: HabitFor
             </div>
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-0 pt-2">
             <Button
               type="button"
               variant="ghost"
+              size="sm"
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!name.trim()}>
-              {editingHabit ? 'Save Changes' : 'Add Habit'}
+            <Button type="submit" size="sm" disabled={!name.trim()}>
+              {editingHabit ? 'Save' : 'Add'}
             </Button>
           </DialogFooter>
         </form>
