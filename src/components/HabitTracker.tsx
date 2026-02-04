@@ -3,8 +3,11 @@ import { useHabits } from '@/hooks/useHabits';
 import { HabitItem } from './HabitItem';
 import { HabitForm } from './HabitForm';
 import { EmptyState } from './EmptyState';
+import { WeeklyProgress } from './WeeklyProgress';
+import { MonthlyChart } from './MonthlyChart';
+import { ThemeToggle } from './ThemeToggle';
 import { Button } from '@/components/ui/button';
-import { Plus, Sparkles } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Habit } from '@/types/habit';
 import {
   AlertDialog,
@@ -55,70 +58,70 @@ export function HabitTracker() {
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+        <div className="animate-pulse text-muted-foreground text-sm">Loading...</div>
       </div>
     );
   }
 
-  const totalStreak = habits.reduce((sum, habit) => sum + getStreak(habit), 0);
-
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <div className="max-w-xl mx-auto px-4 py-6 sm:py-10">
         {/* Header */}
-        <header className="mb-8 slide-up">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-                Habit Tracker
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Build better habits, one day at a time
-              </p>
+        <header className="mb-8">
+          <div className="flex items-center justify-between mb-1">
+            <h1 className="text-xl font-semibold text-foreground">
+              Habits
+            </h1>
+            <div className="flex items-center gap-1">
+              <ThemeToggle />
+              <Button 
+                onClick={() => setFormOpen(true)} 
+                variant="ghost" 
+                size="icon"
+                className="h-8 w-8"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
             </div>
-            <Button onClick={() => setFormOpen(true)} size="default" className="gap-2">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Add Habit</span>
-            </Button>
           </div>
-
-          {/* Stats */}
-          {habits.length > 0 && (
-            <div className="mt-6 flex gap-4">
-              <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-secondary">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">
-                  {habits.length} habit{habits.length !== 1 ? 's' : ''}
-                </span>
-              </div>
-              {totalStreak > 0 && (
-                <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent">
-                  <span className="text-sm font-medium text-accent-foreground">
-                    🔥 {totalStreak} total streak days
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
+          <p className="text-sm text-muted-foreground">
+            Track your daily habits
+          </p>
         </header>
 
+        {/* Weekly Progress */}
+        {habits.length > 0 && (
+          <div className="mb-8">
+            <WeeklyProgress habits={habits} />
+          </div>
+        )}
+
         {/* Habit List */}
-        <main className="space-y-3">
+        <section className="mb-8">
           {habits.length === 0 ? (
             <EmptyState />
           ) : (
-            habits.map((habit) => (
-              <HabitItem
-                key={habit.id}
-                habit={habit}
-                streak={getStreak(habit)}
-                onToggleDate={(date) => toggleHabitDate(habit.id, date)}
-                onEdit={() => handleEdit(habit)}
-                onDelete={() => setDeletingHabit(habit)}
-              />
-            ))
+            <div className="divide-y divide-border">
+              {habits.map((habit) => (
+                <HabitItem
+                  key={habit.id}
+                  habit={habit}
+                  streak={getStreak(habit)}
+                  onToggleDate={(date) => toggleHabitDate(habit.id, date)}
+                  onEdit={() => handleEdit(habit)}
+                  onDelete={() => setDeletingHabit(habit)}
+                />
+              ))}
+            </div>
           )}
-        </main>
+        </section>
+
+        {/* Monthly Analytics */}
+        {habits.length > 0 && (
+          <section className="pt-6 border-t border-border">
+            <MonthlyChart habits={habits} />
+          </section>
+        )}
 
         {/* Habit Form Dialog */}
         <HabitForm
@@ -134,8 +137,7 @@ export function HabitTracker() {
             <AlertDialogHeader>
               <AlertDialogTitle>Delete habit?</AlertDialogTitle>
               <AlertDialogDescription>
-                This will permanently delete "{deletingHabit?.name}" and all its tracking data.
-                This action cannot be undone.
+                This will permanently delete "{deletingHabit?.name}" and all its data.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
