@@ -34,22 +34,26 @@ export function HabitItem({
 
   return (
     <div className="habit-row fade-in group">
-      <div className="flex items-center gap-3 min-w-0 flex-1">
-        <span className="text-lg flex-shrink-0">{habit.emoji}</span>
+      <div className="flex items-start sm:items-center gap-4 min-w-0 flex-1">
+        <span className="text-base sm:text-lg flex-shrink-0 mt-0.5 sm:mt-0">{habit.emoji}</span>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className="font-medium text-foreground truncate text-sm">{habit.name}</h3>
-            <span className="text-xs text-muted-foreground">{weeklyPercentage}%</span>
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <h3 className="font-medium text-foreground text-xs sm:text-sm leading-tight line-clamp-2 sm:line-clamp-1">
+              {habit.name}
+            </h3>
+            <span className="text-[10px] sm:text-xs text-muted-foreground flex-shrink-0">
+              {weeklyPercentage}%
+            </span>
           </div>
           {streak > 0 && (
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
               🔥 {streak} day streak
             </p>
           )}
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
         <WeeklyCalendar
           completedDates={habit.completedDates}
           onToggleDate={onToggleDate}
@@ -60,9 +64,9 @@ export function HabitItem({
             <Button 
               variant="ghost" 
               size="icon" 
-              className="h-7 w-7 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+              className="h-6 w-6 sm:h-7 sm:w-7 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-36">

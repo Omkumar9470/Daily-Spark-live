@@ -102,11 +102,36 @@
 
 @layer components {
   .habit-row {
-    @apply flex items-center justify-between py-3 px-3 -mx-3 notion-hover;
+    @apply flex items-center justify-between py-2.5 px-2 -mx-2 sm:py-3 sm:px-3 sm:-mx-3 notion-hover;
   }
 
   .day-cell {
-    @apply w-7 h-7 rounded-md flex items-center justify-center text-xs font-medium transition-all duration-150 cursor-pointer;
+    @apply w-6 h-6 sm:w-7 sm:h-7 rounded-md flex items-center justify-center text-[10px] sm:text-xs font-medium transition-all duration-150 cursor-pointer;
+  }
+
+  /* Extra small screens */
+  @media (max-width: 400px) {
+    .habit-row {
+      @apply py-2 px-1.5 -mx-1.5;
+    }
+    
+    .day-cell {
+      @apply w-5 h-5 text-[9px] rounded;
+    }
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .day-cell-empty {
